@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para ti mi amor</title>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <style>
@@ -28,7 +28,7 @@
             box-shadow: 15px 15px 30px rgba(0,0,0,0.2);
             border-radius: 15px;
             border: 1px solid #ffcdd2;
-            z-index: 10; /* Para estar sobre el fondo pero bajo la celebración */
+            z-index: 10;
         }
 
         .page {
@@ -59,6 +59,62 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        /* --- ESTILOS RESPONSIVOS (CELULAR) --- */
+        @media (max-width: 768px) {
+            .notebook {
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .page {
+                flex-direction: column;
+                overflow-y: auto;
+                justify-content: flex-start;
+                padding: 60px 20px 80px 20px;
+                border: none;
+            }
+
+            .content-left, .content-right {
+                width: 100%;
+                flex: none;
+                padding: 0;
+            }
+
+            .content-left { margin-bottom: 20px; }
+            
+            .photo {
+                max-width: 80% !important;
+                height: auto !important;
+                margin: 0 auto;
+                display: block;
+            }
+
+            p {
+                font-size: 1.4rem !important;
+                text-align: center !important;
+                padding-bottom: 20px;
+            }
+
+            .fast-beating-heart { width: 150px !important; height: 150px !important; }
+            
+            .next-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(255, 255, 255, 0.9);
+                padding: 10px 20px;
+                border-radius: 50px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                font-size: 1.5rem !important;
+            }
+            
+            .emoji-corner { font-size: 2rem !important; }
+            .floating-message h2 { font-size: 1.8rem !important; margin: 0 20px 20px 20px !important; }
+        }
+
         /* ICONOS SVG */
         .svg-icon {
             width: 30px;
@@ -73,13 +129,14 @@
         .svg-heart.red { fill: #c2185b; }
         .svg-flower { fill: #ff80ab; }
 
-        /* ESTILO PORTADA */
+        /* PORTADA */
         .fast-heart-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
+            width: 100%;
         }
 
         .fast-beating-heart {
@@ -98,17 +155,13 @@
             100% { transform: scale(1); }
         }
 
-        /* EMOJIS EN PORTADA */
         .emoji-corner {
             position: absolute;
             font-size: 3rem;
             opacity: 0.8;
             animation: floatEmoji 3s ease-in-out infinite;
         }
-        @keyframes floatEmoji {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        @keyframes floatEmoji { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         .content-left {
             flex: 1;
@@ -126,13 +179,23 @@
             z-index: 2;
         }
 
+        /* Estilo del texto y cursor de escritura */
         p {
             font-size: 1.6rem;
             color: #555;
             line-height: 1.4;
             text-align: left;
             margin: 0;
+            min-height: 50px;
         }
+        
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: #e91e63;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .photo {
             width: 100%;
@@ -142,15 +205,6 @@
             border: 10px solid white;
             box-shadow: 0 5px 15px rgba(233, 30, 99, 0.2);
             transform: rotate(-3deg);
-        }
-
-        .photo-large {
-            width: 450px;
-            height: 400px;
-            object-fit: cover;
-            border: 15px solid white;
-            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.3);
-            transform: rotate(2deg);
         }
 
         .floating-message {
@@ -170,10 +224,7 @@
             backdrop-filter: blur(2px);
         }
 
-        .reveal-heart {
-            animation: heartReveal 0.8s forwards;
-        }
-
+        .reveal-heart { animation: heartReveal 0.8s forwards; }
         @keyframes heartReveal {
             0% { clip-path: circle(150% at center); opacity: 1; }
             50% { clip-path: circle(20% at center); opacity: 0.9; }
@@ -234,12 +285,8 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .option-btn:hover { 
-            background-color: #e91e63;
-            color: white;
-        }
+        .option-btn:hover { background-color: #e91e63; color: white; }
 
-        /* PANTALLA DE CELEBRACIÓN */
         #final-celebration {
             display: none;
             position: fixed;
@@ -248,39 +295,38 @@
             width: 100%;
             height: 100%;
             background-color: #fce4ec; 
-            z-index: 100; /* Por encima de todo */
+            z-index: 100;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             text-align: center;
             padding: 40px;
             box-sizing: border-box;
-            overflow: hidden; /* Para que el collage no se salga */
+            overflow: hidden;
         }
 
         #final-celebration h1 { 
             color: #880e4f; 
             margin-bottom: 20px; 
-            font-size: 4rem;
+            font-size: 3rem;
             z-index: 10; 
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
         }
         
         #final-celebration p { 
-            font-size: 1.8rem; 
+            font-size: 1.5rem; 
             color: #c2185b; 
             text-align: center; 
             max-width: 800px; 
             z-index: 10;
-            background: rgba(255,255,255,0.6); /* Fondo suave para leer bien */
+            background: rgba(255,255,255,0.6);
             padding: 20px;
             border-radius: 15px;
         }
 
-        /* Corazón Gigante Final */
         .final-huge-heart {
-            width: 200px;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             fill: #d81b60;
             animation: heartbeat-fast 0.5s infinite;
             margin-bottom: 30px;
@@ -288,22 +334,17 @@
             filter: drop-shadow(0 0 20px rgba(233, 30, 99, 0.6));
         }
 
-        /* Elementos del Collage de Fondo */
         .collage-heart {
             position: absolute;
             opacity: 0.4;
-            z-index: 1; /* Detrás del texto */
+            z-index: 1;
             animation: floatCollage 4s ease-in-out infinite alternate;
         }
-
-        @keyframes floatCollage {
-            from { transform: translateY(0) rotate(0deg); }
-            to { transform: translateY(-10px) rotate(5deg); }
-        }
+        @keyframes floatCollage { from { transform: translateY(0) rotate(0deg); } to { transform: translateY(-10px) rotate(5deg); } }
 
         iframe {
-            width: 80%;
-            height: 350px;
+            width: 90%;
+            height: 300px;
             border: 8px solid white;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -338,11 +379,9 @@
 
             <div class="fast-heart-container">
                 <svg class="fast-beating-heart"><use href="#heart-icon"></use></svg>
-                <p style="text-align: center; margin-top: 30px; font-size: 1.8rem; color: #880e4f;">
-                    Te amo tanto mi amor, mi corazón es tuyo y se emociona solo de pensar en ti
-                </p>
+                <p class="typewriter-text" data-text="Te amo tanto mi amor, mi corazón es tuyo y se emociona solo de pensar en ti" style="text-align: center; margin-top: 30px; font-size: 1.8rem; color: #880e4f;"></p>
             </div>
-            <p style="position: absolute; bottom: 20px; width: 100%; text-align: center; color: #aaa; font-size: 1rem;">(Haz clic en Siguiente)</p>
+            <p style="position: absolute; bottom: 20px; width: 100%; text-align: center; color: #aaa; font-size: 1rem;">(Siguiente ➜)</p>
         </div>
 
         <div class="page">
@@ -356,7 +395,7 @@
                 <img src="imagen1.1.jpeg" class="photo" alt="Foto 1.1">
             </div>
             <div class="content-right">
-                <p>Hola, mi amor bonita. Te amo con todo mi corazón. Pronto vienen fechas importantes y, aunque no necesito un día especial para amarte, me encanta recordarte lo mucho que te amo y lo importante que eres para mí.</p>
+                <p class="typewriter-text" data-text="Hola, mi amor bonita. Te amo con todo mi corazón. Pronto vienen fechas importantes y, aunque no necesito un día especial para amarte, me encanta recordarte lo mucho que te amo y lo importante que eres para mí."></p>
                 <div style="margin-top: 20px; text-align: right;">
                     <svg class="svg-icon svg-heart pink"><use href="#heart-icon"></use></svg>
                     <svg class="svg-icon svg-heart red"><use href="#heart-icon"></use></svg>
@@ -375,7 +414,7 @@
                 <img src="imagen2.jpeg" class="photo" style="transform: rotate(2deg);" alt="Foto 2">
             </div>
             <div class="content-right">
-                <p>¡Me encanta estar junto a ti! Eres mi princesa bonita, mi niña preciosa, pero, por sobre todo, somos un equipo. Te amo intensamente, siempre, todos los días y cada día te amo mucho más.</p>
+                <p class="typewriter-text" data-text="¡Me encanta estar junto a ti! Eres mi princesa bonita, mi niña preciosa, pero, por sobre todo, somos un equipo. Te amo intensamente, siempre, todos los días y cada día te amo mucho más."></p>
                 <div style="margin-top: 20px; text-align: right;">
                     <svg class="svg-icon svg-heart red"><use href="#heart-icon"></use></svg>
                 </div>
@@ -393,7 +432,7 @@
                 <img src="imagen3.jpeg" class="photo" style="transform: rotate(-2deg);" alt="Foto 3">
             </div>
             <div class="content-right">
-                <p>Eres tan hermosa y me haces tan feliz, mi amor bonita. Eres tan linda como el cielito, y en ti veo todo lo bonito. Tu carita me fascina, tú, simplemente, me encantas.</p>
+                <p class="typewriter-text" data-text="Eres tan hermosa y me haces tan feliz, mi amor bonita. Eres tan linda como el cielito, y en ti veo todo lo bonito. Tu carita me fascina, tú, simplemente, me encantas."></p>
                 <div style="margin-top: 20px; text-align: right;">
                     <svg class="svg-icon svg-heart pink"><use href="#heart-icon"></use></svg>
                     <svg class="svg-icon svg-heart pink"><use href="#heart-icon"></use></svg>
@@ -412,7 +451,7 @@
                 <img src="imagen4.jpeg" class="photo" style="transform: rotate(3deg);" alt="Foto 4">
             </div>
             <div class="content-right">
-                <p>En ti me pierdo, mi amor. Al ver tu carita me pongo nervioso y feliz al mismo tiempo. Vivo enamorado de ti y de la forma tan bonita que tienes de amar. Me tienes loquito por ti, te amoooooo tanto.</p>
+                <p class="typewriter-text" data-text="En ti me pierdo, mi amor. Al ver tu carita me pongo nervioso y feliz al mismo tiempo. Vivo enamorado de ti y de la forma tan bonita que tienes de amar. Me tienes loquito por ti, te amoooooo tanto."></p>
                 <div style="margin-top: 20px; text-align: right;">
                     <svg class="svg-icon svg-heart red"><use href="#heart-icon"></use></svg>
                 </div>
@@ -424,13 +463,7 @@
             <iframe src="https://www.youtube.com/embed/5X-Mrc2l1d0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
 
-        <div class="page">
-            <svg class="decor svg-icon big svg-heart pink" style="top: 20px; left: 20px;"><use href="#heart-icon"></use></svg>
-            <svg class="decor svg-icon big svg-heart red" style="bottom: 20px; right: 20px;"><use href="#heart-icon"></use></svg>
-            <img src="asAD.jpeg" class="photo-large" alt="Foto Especial">
-        </div>
-
-        <div class="page" style="background-color: #fce4ec; flex-direction: column;">
+        <div class="page" style="background-color: #fce4ec; flex-direction: column; overflow-y: auto;">
             <svg class="decor svg-icon big svg-heart red" style="top: 20px; left: 20px; opacity:0.5"><use href="#heart-icon"></use></svg>
             <svg class="decor svg-icon big svg-heart red" style="bottom: 20px; right: 20px; opacity:0.5"><use href="#heart-icon"></use></svg>
             
@@ -450,16 +483,41 @@
 
     <div id="final-celebration">
         <svg class="final-huge-heart"><use href="#heart-icon"></use></svg>
-        
         <h1>¡TE AMO!</h1>
         <p>Te amo mi amor, qué lindo estar junto a ti, me encanta tu presencia, me encanta todo contigo mi amor, eres mi princesa tan bonita, brillas tan lindo mi amor, gracias por estar aquí y amarnos tanto mi amor.</p>
-        
-        </div>
+    </div>
 
     <script>
         let currentPage = 0;
         const pages = document.querySelectorAll('.page');
         const nextBtn = document.querySelector('.next-btn');
+
+        // Función de Máquina de Escribir
+        function typeWriter(element, text, speed, callback) {
+            let i = 0;
+            element.innerHTML = ""; 
+            element.classList.add('typing-cursor');
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    element.classList.remove('typing-cursor'); 
+                    if (callback) callback(); 
+                }
+            }
+            type();
+        }
+
+        window.onload = function() {
+            const firstPageText = pages[0].querySelector('.typewriter-text');
+            if(firstPageText) {
+                const text = firstPageText.getAttribute('data-text');
+                typeWriter(firstPageText, text, 50, triggerPageTurnRain);
+            }
+        };
 
         function nextPage() {
             if (currentPage < pages.length - 1) {
@@ -467,7 +525,6 @@
                 currentPage++;
                 pages[currentPage].classList.add('active');
 
-                // Restaurar mensaje flotante
                 const newMessage = pages[currentPage].querySelector('.floating-message');
                 if (newMessage) {
                     newMessage.classList.remove('reveal-heart'); 
@@ -478,7 +535,16 @@
                     nextBtn.style.display = 'none';
                 }
                 
-                triggerPageTurnRain();
+                window.scrollTo(0,0);
+                pages[currentPage].scrollTop = 0;
+
+                const textElement = pages[currentPage].querySelector('.typewriter-text');
+                if (textElement) {
+                    const text = textElement.getAttribute('data-text');
+                    typeWriter(textElement, text, 40, triggerPageTurnRain);
+                } else {
+                    triggerPageTurnRain();
+                }
             }
         }
 
@@ -510,9 +576,7 @@
 
         function celebrate() {
             document.getElementById('final-celebration').style.display = 'flex';
-            // Crear el collage de fondo
             createCollage();
-            // Lluvia final
             launchFinalRain();
         }
 
@@ -521,25 +585,15 @@
             for (let i = 0; i < 50; i++) {
                 const heart = document.createElement('div');
                 heart.classList.add('collage-heart');
-                
-                // Color aleatorio entre rojos y rosas
                 const colors = ['#e91e63', '#f48fb1', '#d81b60', '#ff80ab', '#ffcdd2'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                
                 heart.innerHTML = `<svg viewBox="0 0 24 24" style="fill:${color}"><use href="#heart-icon"></use></svg>`;
-                
-                // Posición aleatoria
                 heart.style.left = Math.random() * 100 + '%';
                 heart.style.top = Math.random() * 100 + '%';
-                
-                // Tamaño aleatorio
                 const size = Math.random() * 100 + 30 + 'px';
                 heart.style.width = size;
                 heart.style.height = size;
-                
-                // Rotación aleatoria
                 heart.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
                 container.appendChild(heart);
             }
         }
@@ -552,7 +606,6 @@
                 const iconId = isHeart ? '#heart-icon' : '#flower-icon';
                 const color = isHeart ? (Math.random() > 0.5 ? '#e91e63' : '#f48fb1') : '#ff80ab';
                 el.innerHTML = `<svg viewBox="0 0 24 24" style="fill:${color}"><use href="${iconId}"></use></svg>`;
-                
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.width = (Math.random() * 30 + 20) + 'px';
                 el.style.height = el.style.width;
